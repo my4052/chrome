@@ -270,3 +270,11 @@ export const SOCKET_CLOSE_METHOD = parseSocketBehavior(
 // (must be a fully-qualified URL)
 export const PROXY_URL: string | undefined = process.env.PROXY_URL;
 export const MAX_PAYLOAD_SIZE: string = process.env.MAX_PAYLOAD_SIZE || '5mb';
+
+
+export const DEVTOOLS_HOST: string = process.env.DEVTOOLS_HOST || '127.0.0.1:9222';
+export const DEVTOOLS_PATH_PREFIX: string = process.env.DEVTOOLS_PATH_PREFIX || '/devtools';
+export const DEVTOOLS_HTTPS: boolean = parseJSONParam(
+  process.env.DEVTOOLS_HTTPS,
+  false,
+);

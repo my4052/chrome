@@ -69,7 +69,10 @@ export interface PuppeteerRequest {
 
 export type PuppeteerLaunchOptions = Parameters<puppeteer.launch>[0];
 
+export type DriveMode = 'stealth' | 'selenium' | 'puppeteer' | 'normal';
+
 export interface ILaunchOptions {
+  driveMode: DriveMode;
   ignoreHTTPSErrors?: boolean;
   slowMo?: number;
   userDataDir?: string;
@@ -301,6 +304,7 @@ export interface IWebdriverStartHTTP extends IHTTPRequest {
 }
 
 export interface IBrowserlessSessionOptions {
+  driveMode: DriveMode;
   token?: string;
   stealth: boolean;
   blockAds: boolean;
@@ -347,4 +351,10 @@ export interface IBrowserHook {
 export interface IPageHook {
   page: puppeteer.Page;
   meta: unknown;
+}
+
+export interface IInjectBlack {
+  page: puppeteer.Page;
+  driveMode: DriveMode;
+  stealth: boolean;
 }

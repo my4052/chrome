@@ -41,7 +41,7 @@ import {
 } from './config';
 import { PLAYWRIGHT_ROUTE } from './constants';
 import { Features } from './features';
-import { browserHook, pageHook, puppeteerHook } from './hooks';
+import { browserHook, injectBlack, pageHook, puppeteerHook } from './hooks';
 import { getPlaywright } from './playwright-provider';
 
 import {
@@ -55,6 +55,7 @@ import {
   IDevtoolsJSON,
   IPage,
   PuppeteerRequest,
+  DriveMode,
 } from './types.d';
 import {
   fetchJson,
@@ -151,6 +152,8 @@ const isPuppeteer = (
 };
 
 const setupPage = async ({
+  driveMode,
+  stealth,
   browser,
   page: pptrPage,
   pauseOnConnect,
@@ -159,6 +162,8 @@ const setupPage = async ({
   windowSize,
   meta,
 }: {
+  driveMode: DriveMode;
+  stealth: boolean;
   browser: IBrowser;
   page: Page;
   pauseOnConnect: boolean;
@@ -182,6 +187,7 @@ const setupPage = async ({
   const id = _.get(page, '_target._targetId', 'Unknown');
 
   await pageHook({ page, meta });
+  await injectBlack({ page, driveMode, stealth });
 
   debug(`Setting up page ${id}`);
 
@@ -254,6 +260,8 @@ const setupPage = async ({
 };
 
 const setupBrowser = async ({
+  driveMode,
+  stealth,
   browser: pptrBrowser,
   browserWSEndpoint,
   isUsingTempDataDir,
@@ -268,6 +276,8 @@ const setupBrowser = async ({
   browserServer,
   meta,
 }: {
+  driveMode: DriveMode;
+  stealth: boolean;
   browser: Browser;
   browserWSEndpoint: string;
   isUsingTempDataDir: boolean;
@@ -312,6 +322,8 @@ const setupBrowser = async ({
       if (page && !page.isClosed()) {
         // @ts-ignore
         setupPage({
+          driveMode,
+          stealth,
           browser,
           page,
           windowSize,
@@ -336,6 +348,8 @@ const setupBrowser = async ({
     debug(`Found ${pages.length} pages`);
     pages.forEach((page) =>
       setupPage({
+        driveMode,
+        stealth,
         browser,
         blockAds,
         page,
@@ -363,6 +377,7 @@ export const defaultLaunchArgs = {
   userDataDir: DEFAULT_USER_DATA_DIR,
   playwright: false,
   stealth: DEFAULT_STEALTH,
+  driveMode: 'normal' as const,
   meta: null,
 };
 
@@ -447,6 +462,7 @@ export const convertUrlParamsToLaunchOpts = (
     ignoreHTTPSErrors,
     slowMo,
     stealth,
+    driveMode = 'normal',
     userDataDir,
     pause,
     trackingId,
@@ -503,6 +519,7 @@ export const convertUrlParamsToLaunchOpts = (
     dumpio,
     headless: isHeadless,
     stealth: isStealth,
+    driveMode: driveMode as DriveMode,
     ignoreDefaultArgs: parsedIgnoreDefaultArgs,
     ignoreHTTPSErrors:
       !_.isUndefined(ignoreHTTPSErrors) || DEFAULT_IGNORE_HTTPS_ERRORS,
@@ -526,8 +543,9 @@ export const launchChrome = async (
   let isUsingTempDataDir = true;
   let browserlessDataDir: string | null = null;
 
+  const { driveMode, ...restOpts } = opts;
   const launchArgs = {
-    ...opts,
+    ...restOpts,
     args: [
       ...BROWSERLESS_ARGS,
       ...(opts.args || []),
@@ -621,6 +639,8 @@ export const launchChrome = async (
 
   return iBrowser.then((browser) =>
     setupBrowser({
+      driveMode,
+      stealth: launchArgs.stealth,
       blockAds: opts.blockAds,
       browser,
       browserlessDataDir,
@@ -639,6 +659,7 @@ export const launchChrome = async (
 };
 
 export const launchChromeDriver = async ({
+  driveMode = 'normal' as const,
   stealth = false,
   blockAds = false,
   trackingId = null,
@@ -680,6 +701,8 @@ export const launchChromeDriver = async ({
           (await browser.pages()).length || (await browser.newPage());
 
           iBrowser = await setupBrowser({
+            driveMode,
+            stealth,
             blockAds,
             browser,
             browserlessDataDir,

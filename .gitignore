@@ -20,3 +20,8 @@ _site
 
 # Coverage
 coverage
+
+.env.local
+.env.dev.local
+.env.test.local
+.env.prod.local

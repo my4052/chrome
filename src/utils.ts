@@ -376,6 +376,8 @@ export const normalizeWebdriverStart = async (
     DEFAULT_STEALTH
   );
 
+  const driveMode = 'normal' as const;
+
   const token =
     capabilities['browserless.token'] ??
     capabilities['browserless:token'] ??
@@ -409,6 +411,7 @@ export const normalizeWebdriverStart = async (
   return {
     body: parsed,
     params: {
+      driveMode,
       token,
       stealth,
       blockAds,
@@ -727,6 +730,8 @@ Happy coding!
 export const printNetworkInfo = (debug: dbg.Debugger, port: number) => {
   debug(`\n
 Running on port ${port}
+\tLocalhost\t http://localhost:${port}
+\tLocal network\t http://${ip.address()}:${port}
 \tLocalhost\t ws:localhost:${port}
 \tLocal network\t ws:${ip.address()}:${port}`);
 };
