@@ -130,7 +130,7 @@
     "heapdump": "^0.3.15"
   },
   "dependencies": {
-    "@my4052/browserless-debugger": "^0.0.1",
+    "@my4052/browserless-debugger": "^0.0.2",
     "@puppeteer/browsers": "1.4.0",
     "@types/archiver": "^5.3.2",
     "@types/chai": "^4.3.5",
