@@ -336,7 +336,6 @@ export class BrowserlessServer {
         app.use('/devtools',
           expressHttpProxy(DEVTOOLS_HOST, {
             proxyReqPathResolver: (req) => {
-              console.log(DEVTOOLS_PATH_PREFIX + req.url);
               return DEVTOOLS_PATH_PREFIX + req.url;
             },
             https: DEVTOOLS_HTTPS
