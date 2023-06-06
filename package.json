@@ -1,6 +1,6 @@
 {
   "name": "@my4052/browserless-chrome",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Chrome-as-a-service on your own hardware or in the cloud.",
   "repository": "browserless/chrome",
   "engines": {
@@ -130,7 +130,7 @@
     "heapdump": "^0.3.15"
   },
   "dependencies": {
-    "@my4052/browserless-debugger": "^0.0.3",
+    "@my4052/browserless-debugger": "^0.0.4",
     "@puppeteer/browsers": "1.4.0",
     "@types/archiver": "^5.3.2",
     "@types/chai": "^4.3.5",
