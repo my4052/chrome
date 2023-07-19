@@ -1,5 +1,5 @@
 ARG BASE_VERSION=1.59.0
-ARG BASE_REPO=browserless/base
+ARG BASE_REPO=my4052/base
 FROM ${BASE_REPO}:${BASE_VERSION}
 
 # Build Args
