@@ -9,10 +9,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Build the latest browserless/base image
-      run: docker build -t browserless/base:latest base
+      run: docker build -t my4052/base:latest base
 
     - name: Build the latest browserless/chrome image
-      run: docker build --build-arg BASE_VERSION=latest -t browserless/chrome:latest .
+      run: docker build --build-arg BASE_VERSION=latest -t my4052/chrome:latest .
 
     - name: Test the latest image
-      run: docker run --ipc=host -e CI=true --entrypoint ./test.sh browserless/chrome:latest
+      run: docker run --ipc=host -e CI=true --entrypoint ./test.sh my4052/chrome:latest
