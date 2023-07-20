@@ -7,7 +7,7 @@ import url from 'url';
 import cookie from 'cookie';
 import cors from 'cors';
 import express from 'express';
-import expressHttpProxy from 'express-http-proxy';
+// import expressHttpProxy from 'express-http-proxy';
 import promBundle from 'express-prom-bundle';
 import httpProxy from 'http-proxy';
 import _ from 'lodash';
@@ -16,11 +16,11 @@ import client from 'prom-client';
 import request from 'request';
 
 import { getBrowsersRunning } from './chrome-helper';
-import {
-  DEVTOOLS_HOST,
-  DEVTOOLS_PATH_PREFIX,
-  DEVTOOLS_HTTPS
-} from './config';
+// import {
+//   DEVTOOLS_HOST,
+//   DEVTOOLS_PATH_PREFIX,
+//   DEVTOOLS_HTTPS
+// } from './config';
 import { Features } from './features';
 import { getMachineStats, overloaded } from './hardware-monitoring';
 import { afterRequest, beforeRequest, externalRoutes } from './hooks';
@@ -332,15 +332,15 @@ export class BrowserlessServer {
       }
 
       if (!this.config.disabledFeatures.includes(Features.DEBUG_VIEWER)) {
-        // app.use('/devtools', express.static('./devtools'));
-        app.use('/devtools',
-          expressHttpProxy(DEVTOOLS_HOST, {
-            proxyReqPathResolver: (req) => {
-              return DEVTOOLS_PATH_PREFIX + req.url;
-            },
-            https: DEVTOOLS_HTTPS
-          })
-        );
+        app.use('/devtools', express.static('./devtools'));
+        // app.use('/devtools',
+        //   expressHttpProxy(DEVTOOLS_HOST, {
+        //     proxyReqPathResolver: (req) => {
+        //       return DEVTOOLS_PATH_PREFIX + req.url;
+        //     },
+        //     https: DEVTOOLS_HTTPS
+        //   })
+        // );
 
         app.use(
           '/',

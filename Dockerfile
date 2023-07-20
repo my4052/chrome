@@ -7,12 +7,13 @@ ARG USE_CHROME_STABLE
 ARG PUPPETEER_CHROMIUM_REVISION
 ARG PUPPETEER_VERSION
 ARG PORT=3000
+ARG CONNECTION_TIMEOUT=-1
 
 # Application parameters and variables
 ENV APP_DIR=/usr/src/app
 ENV PUPPETEER_CACHE_DIR=${APP_DIR}
 ENV PLAYWRIGHT_BROWSERS_PATH=${APP_DIR}
-ENV CONNECTION_TIMEOUT=60000
+ENV CONNECTION_TIMEOUT=${CONNECTION_TIMEOUT}
 ENV CHROME_PATH=/usr/bin/google-chrome
 ENV HOST=0.0.0.0
 ENV IS_DOCKER=true
@@ -46,6 +47,8 @@ RUN if [ "$USE_CHROME_STABLE" = "true" ]; then \
   else \
     export CHROMEDRIVER_SKIP_DOWNLOAD=true;\
   fi &&\
+  npm config set registry https://registry.npm.taobao.org/;\
+  npm i;\
   npm i puppeteer@$PUPPETEER_VERSION;\
   npm run postinstall &&\
   npm run build &&\
